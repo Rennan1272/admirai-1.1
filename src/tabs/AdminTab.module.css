@@ -1,0 +1,140 @@
+.wrap { padding-bottom: 80px; }
+
+.tabBar {
+  background: #141414;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 0 16px;
+  display: flex;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #555;
+  padding: 13px 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.tabBtn.active { border-bottom-color: #fff; color: #fff; }
+
+.content { padding: 16px 18px; }
+
+.successMsg {
+  background: #0a1a0a;
+  border: 1px solid rgba(0,200,80,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #4caf50;
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+.search {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.search:focus { border-color: #555; }
+
+.memberRow {
+  background: #141414;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.memberInfo { flex: 1; overflow: hidden; }
+.memberName { display: block; color: #fff; font-size: 13px; font-weight: 700; }
+.memberMeta { display: block; color: #555; font-size: 10px; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.roleBadge {
+  background: #1a1a1a;
+  color: #aaa;
+  border: 1px solid #2a2a2a;
+  border-radius: 7px;
+  padding: 4px 9px;
+  font-size: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sectionLabel {
+  color: #777;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.formField { margin-bottom: 14px; }
+
+.formLabel {
+  display: block;
+  color: #666;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.formInput {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.formInput:focus { border-color: #555; }
+
+.btnSubmit {
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.2s;
+}
+.btnSubmit:hover { opacity: 0.88; }
+
+.avatarWrap { position: relative; flex-shrink: 0; }
+.avatarImg  { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+.bdBadge    { position: absolute; top: -4px; right: -4px; font-size: 12px; }
+.memberBd   { display: block; color: #444; font-size: 10px; margin-top: 1px; }

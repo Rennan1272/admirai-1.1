@@ -1,0 +1,224 @@
+.wrap { padding-bottom: 80px; }
+
+.pageHeader {
+  position: sticky;
+  top: 52px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9;
+}
+
+.pageTitle { color: #888; font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+
+.btnNew {
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 16px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.composer {
+  background: #141414;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 14px 16px;
+}
+
+.composerTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.composerName { color: #fff; font-size: 13px; font-weight: 700; }
+.composerRole { color: #555; font-size: 11px; }
+
+.textarea {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 13px;
+  min-height: 72px;
+  resize: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.previewWrap {
+  position: relative;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.previewImg {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  object-fit: cover;
+}
+
+.removePhoto {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.composerActions { display: flex; gap: 8px; align-items: center; }
+
+.btnPhoto {
+  background: #1e1e1e;
+  color: #aaa;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btnPublish {
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btnCancel {
+  background: transparent;
+  color: #666;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.postCard { border-bottom: 1px solid #1a1a1a; padding: 18px 16px; }
+
+.postTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.postAuthorRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.postAuthor    { color: #fff; font-size: 13px; font-weight: 700; }
+
+.tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid;
+  letter-spacing: 0.5px;
+}
+
+.postMeta { color: #555; font-size: 11px; }
+.postText { color: #ccc; font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+
+.postImg {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #222;
+  margin-bottom: 12px;
+}
+
+.postFooter { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.actionBtn span { font-size: 15px; }
+.actionBtn.liked { color: #FF4500; }
+
+/* Comments */
+.comments {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.comment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.commentBody { flex: 1; background: #1a1a1a; border-radius: 8px; padding: 8px 10px; }
+.commentAuthor { color: #fff; font-size: 11px; font-weight: 700; display: block; margin-bottom: 2px; }
+.commentText   { color: #ccc; font-size: 12px; line-height: 1.4; display: block; }
+.commentTime   { color: #444; font-size: 9px; display: block; margin-top: 3px; }
+
+.commentInput {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.commentField {
+  flex: 1;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 8px 14px;
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+}
+
+.commentSend {
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

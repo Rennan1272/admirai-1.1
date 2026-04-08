@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 300;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.panel {
+  background: #141414;
+  border-left: 1px solid #222;
+  width: 300px;
+  max-width: 90vw;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 0 80px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid #222;
+  position: sticky;
+  top: 0;
+  background: #141414;
+}
+
+.title { color: #fff; font-size: 14px; font-weight: 700; }
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.empty {
+  color: #444;
+  font-size: 13px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.text { color: #ccc; font-size: 13px; line-height: 1.5; flex: 1; }
+.time { color: #555; font-size: 10px; white-space: nowrap; margin-top: 2px; }
