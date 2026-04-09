@@ -1,128 +1,162 @@
 import { useState, useEffect } from 'react'
 import { ROLE_LABELS } from '../data/initialData.js'
 import Logo from './Logo.jsx'
+import BiometricSetup from './BiometricSetup.jsx'
+import {
+  isBiometricAvailable,
+  getBiometricPreference,
+  authenticateWithBiometric,
+  disableBiometric,
+  detectBiometricType,
+  BIOMETRIC_LABELS,
+} from '../utils/biometric.js'
 import s from './LoginScreen.module.css'
 
-const BIOMETRIC_KEY = 'admirai_biometric_user'
-
 export default function LoginScreen({ users, onLogin }) {
-  const [username, setUsername]       = useState('')
-  const [password, setPassword]       = useState('')
-  const [error, setError]             = useState('')
-  const [showDemo, setShowDemo]       = useState(false)
-  const [showBioPrompt, setShowBioPrompt] = useState(false)
-  const [pendingUser, setPendingUser] = useState(null)
-  const [bioEnabled, setBioEnabled]   = useState(false)
-  const [bioUser, setBioUser]         = useState(null)
+  const [username, setUsername]           = useState('')
+  const [password, setPassword]           = useState('')
+  const [error, setError]                 = useState('')
+  const [showDemo, setShowDemo]           = useState(false)
 
+  // Biometric state
+  const [bioAvailable, setBioAvailable]   = useState(false)
+  const [bioPreference, setBioPref]       = useState(null)
+  const [bioLoading, setBioLoading]       = useState(false)
+  const [bioError, setBioError]           = useState('')
+  const [showBioSetup, setShowBioSetup]   = useState(false)
+  const [pendingUser, setPendingUser]     = useState(null)
+
+  const bioType   = detectBiometricType()
+  const bioLabels = BIOMETRIC_LABELS[bioType]
+
+  // On mount: check device biometric support + user preference
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(BIOMETRIC_KEY)
-      if (saved) {
-        const parsed = JSON.parse(saved)
-        setBioEnabled(true)
-        setBioUser(parsed)
-      }
-    } catch (_) {}
+    isBiometricAvailable().then(available => {
+      setBioAvailable(available)
+      if (available) setBioPref(getBiometricPreference())
+    })
   }, [])
 
-  const handleLogin = () => {
-    // FIX: trim and lowercase, compare against live users list
+  // ── Password login ──────────────────────────────────────────────────────────
+  const handlePasswordLogin = () => {
+    setError('')
+    setBioError('')
+
     const found = users.find(
       u => u.username === username.toLowerCase().trim() && u.password === password.trim()
     )
-    if (found) {
-      setError('')
-      // Offer biometric after first login
+
+    if (!found) {
+      setError('Usuário ou senha incorretos.')
+      return
+    }
+
+    // Check if we should offer biometric setup
+    const pref = getBiometricPreference()
+    if (bioAvailable && !pref?.enabled) {
+      // Offer biometric setup before proceeding
       setPendingUser(found)
-      if (!bioEnabled) {
-        setShowBioPrompt(true)
-      } else {
+      setShowBioSetup(true)
+    } else {
+      onLogin(found)
+    }
+  }
+
+  // ── Biometric login ─────────────────────────────────────────────────────────
+  const handleBiometricLogin = async () => {
+    setBioError('')
+    setBioLoading(true)
+
+    const result = await authenticateWithBiometric()
+    setBioLoading(false)
+
+    if (result.success) {
+      // Find user from stored username
+      const found = users.find(u => u.username === result.username)
+      if (found) {
         onLogin(found)
+      } else {
+        // User was deleted or doesn't exist anymore
+        disableBiometric()
+        setBioPref(null)
+        setBioError('Sessão expirada. Faça login com sua senha.')
       }
     } else {
-      setError('Usuário ou senha incorretos')
+      setBioError(result.error || 'Falha na autenticação. Use sua senha.')
     }
   }
 
-  const enableBiometric = () => {
-    try {
-      localStorage.setItem(BIOMETRIC_KEY, JSON.stringify({ username: pendingUser.username }))
-    } catch (_) {}
-    setBioEnabled(true)
-    setBioUser({ username: pendingUser.username })
-    setShowBioPrompt(false)
+  // ── After biometric setup resolves ─────────────────────────────────────────
+  const handleBioSetupDone = (enabled) => {
+    setShowBioSetup(false)
+    if (enabled) setBioPref(getBiometricPreference())
     onLogin(pendingUser)
+    setPendingUser(null)
   }
 
-  const skipBiometric = () => {
-    setShowBioPrompt(false)
-    onLogin(pendingUser)
-  }
-
-  const handleBiometricLogin = () => {
-    // Simulate Face ID — in a native app this calls LocalAuthentication/BiometricPrompt
-    const found = users.find(u => u.username === bioUser.username)
-    if (found) {
-      // Simulate biometric dialog
-      const ok = window.confirm('Face ID — Confirmar identidade?\n(Simulação: clique OK para autenticar)')
-      if (ok) onLogin(found)
-    } else {
-      setBioEnabled(false)
-      setBioUser(null)
-      localStorage.removeItem(BIOMETRIC_KEY)
-      setError('Sessão biométrica expirada. Faça login novamente.')
-    }
-  }
-
-  const disableBiometric = () => {
-    localStorage.removeItem(BIOMETRIC_KEY)
-    setBioEnabled(false)
-    setBioUser(null)
-  }
+  const hasBioSession = bioAvailable && bioPreference?.enabled
 
   return (
     <div className={s.wrap}>
+      {/* Biometric setup sheet */}
+      {showBioSetup && pendingUser && (
+        <BiometricSetup
+          username={pendingUser.username}
+          onDone={handleBioSetupDone}
+        />
+      )}
+
+      {/* Logo */}
       <div className={s.logoBox}>
         <Logo size={80} />
         <h1 className={s.brand}>ADMIRAI</h1>
         <p className={s.brandSub}>SISTEMA DA IGREJA</p>
       </div>
 
-      {/* Biometric prompt after login */}
-      {showBioPrompt && (
-        <div className={s.bioModal}>
-          <div className={s.bioCard}>
-            <div className={s.bioIcon}>🔐</div>
-            <h3 className={s.bioTitle}>Ativar Face ID?</h3>
-            <p className={s.bioDesc}>Use reconhecimento facial para entrar rapidamente nos próximos acessos.</p>
-            <button className={s.btnBioEnable} onClick={enableBiometric}>Ativar Face ID</button>
-            <button className={s.btnBioSkip} onClick={skipBiometric}>Agora não</button>
-          </div>
-        </div>
-      )}
-
       <div className={s.card}>
         <h2 className={s.cardTitle}>Entrar</h2>
 
-        {/* Biometric quick access */}
-        {bioEnabled && bioUser && (
-          <button className={s.btnBioLogin} onClick={handleBiometricLogin}>
-            <span style={{ fontSize: 22 }}>🔐</span>
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>Entrar com Face ID</div>
-              <div style={{ fontSize: 10, color: '#888' }}>@{bioUser.username}</div>
+        {/* ── Biometric quick entry (shown when user has it enabled) ── */}
+        {hasBioSession && (
+          <div className={s.bioSection}>
+            <button
+              className={s.btnBiometric}
+              onClick={handleBiometricLogin}
+              disabled={bioLoading}
+            >
+              {bioLoading
+                ? <span className={s.bioSpinner} />
+                : <span className={s.bioIcon}>{bioLabels.icon}</span>
+              }
+              <div className={s.bioText}>
+                <span className={s.bioLabel}>
+                  {bioLoading ? 'Aguardando…' : `Entrar com ${bioLabels.name}`}
+                </span>
+                <span className={s.bioSub}>
+                  @{bioPreference.username}
+                </span>
+              </div>
+            </button>
+
+            {bioError && <p className={s.bioError}>{bioError}</p>}
+
+            <div className={s.divider}>
+              <span className={s.dividerLine} />
+              <span className={s.dividerText}>ou entre com senha</span>
+              <span className={s.dividerLine} />
             </div>
-          </button>
+          </div>
         )}
 
+        {/* ── Password form ── */}
         <div className={s.field}>
           <label>USUÁRIO</label>
           <input
             value={username}
             onChange={e => setUsername(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
+            onKeyDown={e => e.key === 'Enter' && handlePasswordLogin()}
             placeholder="Digite seu usuário"
+            autoComplete="username"
           />
         </div>
 
@@ -132,18 +166,23 @@ export default function LoginScreen({ users, onLogin }) {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
+            onKeyDown={e => e.key === 'Enter' && handlePasswordLogin()}
             placeholder="Digite sua senha"
+            autoComplete="current-password"
           />
         </div>
 
         {error && <p className={s.error}>{error}</p>}
 
-        <button className={s.btnLogin} onClick={handleLogin}>ACESSAR</button>
+        <button className={s.btnLogin} onClick={handlePasswordLogin}>ACESSAR</button>
 
-        {bioEnabled && (
-          <button className={s.btnDisableBio} onClick={disableBiometric}>
-            Desativar Face ID
+        {/* Disable biometric link */}
+        {hasBioSession && (
+          <button
+            className={s.btnDisableBio}
+            onClick={() => { disableBiometric(); setBioPref(null); setBioError('') }}
+          >
+            Desativar {bioLabels.name}
           </button>
         )}
 
@@ -152,6 +191,7 @@ export default function LoginScreen({ users, onLogin }) {
         </button>
       </div>
 
+      {/* Demo users */}
       {showDemo && (
         <div className={s.demoPanel}>
           <p className={s.demoHeader}>USUÁRIOS DE DEMONSTRAÇÃO (senha: 123)</p>

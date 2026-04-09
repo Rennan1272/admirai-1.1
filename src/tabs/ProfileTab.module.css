@@ -289,3 +289,67 @@
   font-size: 12px;
   cursor: pointer;
 }
+
+/* Security section */
+.bioRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.bioRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.bioRowIcon   { font-size: 22px; flex-shrink: 0; }
+.bioRowLabel  { color: #fff; font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.bioRowSub    { color: #666; font-size: 11px; }
+
+.bioUnavailable {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.5;
+}
+
+/* Toggle switch */
+.toggle {
+  width: 48px;
+  height: 28px;
+  background: #333;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.25s;
+  flex-shrink: 0;
+}
+.toggle.toggleOn { background: #4caf50; }
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.25s;
+  display: block;
+}
+.toggle.toggleOn .toggleThumb { transform: translateX(20px); }
+
+.bioNote {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(76,175,80,0.08);
+  border: 1px solid rgba(76,175,80,0.2);
+  border-radius: 8px;
+  color: #4caf50;
+  font-size: 11px;
+  line-height: 1.5;
+}

@@ -1,7 +1,15 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { ROLE_LABELS } from '../data/initialData.js'
 import { initials, formatBirthDate } from '../utils/helpers.js'
 import Logo from '../components/Logo.jsx'
+import BiometricSetup from '../components/BiometricSetup.jsx'
+import {
+  isBiometricAvailable,
+  getBiometricPreference,
+  disableBiometric,
+  detectBiometricType,
+  BIOMETRIC_LABELS,
+} from '../utils/biometric.js'
 import s from './ProfileTab.module.css'
 
 const DELETE_REASONS = [
@@ -20,6 +28,38 @@ export default function ProfileTab({ user, onUpdateUser, onBack, onDeleteAccount
   const [deleteComment, setDeleteComment]   = useState('')
   const [deleteStep, setDeleteStep]         = useState(1)
 
+  // Biometric state
+  const [bioAvailable, setBioAvailable] = useState(false)
+  const [bioEnabled, setBioEnabled]     = useState(false)
+  const [showBioSetup, setShowBioSetup] = useState(false)
+
+  const bioType   = detectBiometricType()
+  const bioLabels = BIOMETRIC_LABELS[bioType]
+
+  useEffect(() => {
+    isBiometricAvailable().then(available => {
+      setBioAvailable(available)
+      if (available) {
+        const pref = getBiometricPreference()
+        setBioEnabled(pref?.enabled || false)
+      }
+    })
+  }, [])
+
+  const handleBioToggle = () => {
+    if (bioEnabled) {
+      disableBiometric()
+      setBioEnabled(false)
+    } else {
+      setShowBioSetup(true)
+    }
+  }
+
+  const handleBioSetupDone = (enabled) => {
+    setShowBioSetup(false)
+    setBioEnabled(enabled)
+  }
+
   const handlePhoto = (e) => {
     const file = e.target.files[0]
     if (!file) return
@@ -30,12 +70,16 @@ export default function ProfileTab({ user, onUpdateUser, onBack, onDeleteAccount
 
   const handleDeleteConfirm = () => {
     if (!deleteReason) return
-    // In a real app: send feedback to backend, then anonymize/remove data per LGPD
     onDeleteAccount()
   }
 
   return (
     <div className={s.wrap}>
+      {/* Biometric setup bottom sheet */}
+      {showBioSetup && (
+        <BiometricSetup username={user.username} onDone={handleBioSetupDone} />
+      )}
+
       <div className={s.header}>
         <button className={s.backBtn} onClick={onBack}>← Voltar</button>
         <span className={s.pageTitle}>MEU PERFIL</span>
@@ -86,7 +130,7 @@ export default function ProfileTab({ user, onUpdateUser, onBack, onDeleteAccount
                 <div className={s.deleteIcon}>🗑️</div>
                 <h3 className={s.deleteTitle}>Tem certeza?</h3>
                 <p className={s.deleteDesc}>
-                  Esta ação é permanente. Sua conta e dados pessoais serão removidos do sistema.
+                  Esta ação é permanente. Sua conta e dados pessoais serão removidos do sistema conforme a LGPD.
                 </p>
                 <div className={s.reasonSummary}>
                   <strong>Motivo:</strong> {deleteReason}
@@ -127,6 +171,48 @@ export default function ProfileTab({ user, onUpdateUser, onBack, onDeleteAccount
         <div className={s.row}><span className={s.label}>Usuário</span><span className={s.value}>@{user.username}</span></div>
       </div>
 
+      {/* ── Security section ── */}
+      <div className={s.card}>
+        <h3 className={s.cardTitle}>SEGURANÇA</h3>
+
+        {bioAvailable ? (
+          <div className={s.bioRow}>
+            <div className={s.bioRowLeft}>
+              <span className={s.bioRowIcon}>{bioLabels.icon}</span>
+              <div>
+                <div className={s.bioRowLabel}>{bioLabels.name}</div>
+                <div className={s.bioRowSub}>
+                  {bioEnabled ? 'Ativado — Dados validados pelo sistema' : 'Desativado'}
+                </div>
+              </div>
+            </div>
+            <button
+              className={`${s.toggle} ${bioEnabled ? s.toggleOn : ''}`}
+              onClick={handleBioToggle}
+              role="switch"
+              aria-checked={bioEnabled}
+            >
+              <span className={s.toggleThumb} />
+            </button>
+          </div>
+        ) : (
+          <div className={s.bioUnavailable}>
+            <span style={{ fontSize: 16 }}>🔒</span>
+            <div>
+              <div className={s.bioRowLabel}>Biometria</div>
+              <div className={s.bioRowSub}>Não disponível neste dispositivo ou navegador</div>
+            </div>
+          </div>
+        )}
+
+        {bioEnabled && (
+          <div className={s.bioNote}>
+            ✅ Seus dados biométricos não são armazenados pelo app.
+            A verificação é feita pelo {bioType === 'faceid' ? 'Face ID da Apple' : 'sistema do seu dispositivo'}.
+          </div>
+        )}
+      </div>
+
       {/* Member card */}
       <div className={s.memberCard}>
         <div className={s.memberCardHeader}>
@@ -163,8 +249,10 @@ export default function ProfileTab({ user, onUpdateUser, onBack, onDeleteAccount
       {/* Danger zone */}
       <div className={s.dangerZone}>
         <h4 className={s.dangerTitle}>ZONA DE PERIGO</h4>
-        <p className={s.dangerDesc}>A exclusão de conta remove todos os seus dados de forma permanente, conforme a LGPD.</p>
-        <button className={s.btnDelete} onClick={() => { setDeleteStep(1); setShowDeleteFlow(true) }}>
+        <p className={s.dangerDesc}>
+          A exclusão de conta remove todos os seus dados de forma permanente, conforme a LGPD.
+        </p>
+        <button className={s.btnDelete} onClick={() => { setDeleteStep(1); setDeleteReason(''); setShowDeleteFlow(true) }}>
           🗑️ Excluir minha conta
         </button>
       </div>
