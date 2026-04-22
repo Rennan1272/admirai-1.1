@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { ROLE_LABELS } from '../data/initialData.js'
 import { initials } from '../utils/helpers.js'
 import s from './FeedTab.module.css'
 
 const TAG_COLORS = { Missões: '#FF8C00', Culto: '#fff', Louvor: '#aaa', Infantil: '#ddd', Post: '#666' }
+const PAGE_SIZE = 5 // posts per page
 
 function Avatar({ user, size = 42 }) {
   if (user?.photo) {
@@ -12,6 +13,13 @@ function Avatar({ user, size = 42 }) {
   return (
     <div style={{ width: size, height: size, borderRadius: '50%', background: '#222', border: '2px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: size * 0.3, fontWeight: 700, flexShrink: 0 }}>
       {initials(user?.name || '??')}
+      {/* Infinite scroll loader */}
+      <div ref={loaderRef} style={{ height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {loadingMore && <div className={s.spinner} />}
+        {!loadingMore && page * PAGE_SIZE >= posts.length && posts.length > 0 && (
+          <span style={{ color: '#333', fontSize: 11 }}>— fim do feed —</span>
+        )}
+      </div>
     </div>
   )
 }
@@ -22,6 +30,24 @@ export default function FeedTab({ user, posts, setPosts, users }) {
   const [showNew, setShowNew]       = useState(false)
   const [liked, setLiked]           = useState({})
   const [openComments, setOpenComments] = useState({})
+  const [page, setPage]                 = useState(1)
+  const [loadingMore, setLoadingMore]   = useState(false)
+  const loaderRef = useRef()
+
+  // Intersection Observer for infinite scroll
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0]
+    if (target.isIntersecting && page * PAGE_SIZE < posts.length) {
+      setLoadingMore(true)
+      setTimeout(() => { setPage(p => p + 1); setLoadingMore(false) }, 600)
+    }
+  }, [page, posts.length])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, { threshold: 0.1 })
+    if (loaderRef.current) observer.observe(loaderRef.current)
+    return () => observer.disconnect()
+  }, [handleObserver])
   const [commentText, setCommentText]   = useState({})
   const fileRef = useRef()
 
@@ -126,8 +152,8 @@ export default function FeedTab({ user, posts, setPosts, users }) {
         </div>
       )}
 
-      {/* Posts */}
-      {posts.map(post => {
+      {/* Posts — paginated */}
+      {posts.slice(0, page * PAGE_SIZE).map(post => {
         const isLiked    = liked[post.id]
         const tagColor   = TAG_COLORS[post.tag] || '#888'
         const postUser   = findUser(post.author)
@@ -150,7 +176,7 @@ export default function FeedTab({ user, posts, setPosts, users }) {
             {post.text && <p className={s.postText}>{post.text}</p>}
 
             {post.photo && (
-              <img src={post.photo} alt="post" className={s.postImg} />
+              <img src={post.photo} alt="post" className={s.postImg} loading="lazy" />
             )}
 
             <div className={s.postFooter}>

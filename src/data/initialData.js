@@ -134,3 +134,154 @@ export const TYPE_ICONS = {
 
 export const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 export const DAYS_SHORT = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+// ─── FINANCIAL MODULE ─────────────────────────────────────────────────────────
+// Entity: FinancialEntry { id, churchId, type: 'dizimo'|'oferta', amount, date, memberId?, note }
+export const CHURCHES = [
+  { id: 'rj',   name: 'Rio de Janeiro' },
+  { id: 'gui',  name: 'Guiricema' },
+  { id: 'boa',  name: 'Boa Família' },
+  { id: 'mir',  name: 'Miraí' },
+];
+
+export const INITIAL_FINANCIAL_ENTRIES = [
+  // Rio de Janeiro
+  { id: 1,  churchId: 'rj',  type: 'dizimo',  amount: 850,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 2,  churchId: 'rj',  type: 'oferta',  amount: 320,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 3,  churchId: 'rj',  type: 'dizimo',  amount: 920,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 4,  churchId: 'rj',  type: 'oferta',  amount: 410,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 5,  churchId: 'rj',  type: 'dizimo',  amount: 760,  date: '2026-03-30', note: 'Culto domingo' },
+  { id: 6,  churchId: 'rj',  type: 'oferta',  amount: 280,  date: '2026-03-30', note: 'Culto domingo' },
+  // Guiricema
+  { id: 7,  churchId: 'gui', type: 'dizimo',  amount: 430,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 8,  churchId: 'gui', type: 'oferta',  amount: 190,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 9,  churchId: 'gui', type: 'dizimo',  amount: 510,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 10, churchId: 'gui', type: 'oferta',  amount: 210,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 11, churchId: 'gui', type: 'dizimo',  amount: 380,  date: '2026-03-30', note: 'Culto domingo' },
+  // Boa Família
+  { id: 12, churchId: 'boa', type: 'dizimo',  amount: 290,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 13, churchId: 'boa', type: 'oferta',  amount: 120,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 14, churchId: 'boa', type: 'dizimo',  amount: 340,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 15, churchId: 'boa', type: 'oferta',  amount: 155,  date: '2026-04-13', note: 'Culto domingo' },
+  // Miraí
+  { id: 16, churchId: 'mir', type: 'dizimo',  amount: 620,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 17, churchId: 'mir', type: 'oferta',  amount: 240,  date: '2026-04-06', note: 'Culto domingo' },
+  { id: 18, churchId: 'mir', type: 'dizimo',  amount: 580,  date: '2026-04-13', note: 'Culto domingo' },
+  { id: 19, churchId: 'mir', type: 'oferta',  amount: 270,  date: '2026-04-13', note: 'Culto domingo' },
+];
+
+// ─── MISSION REQUESTS ────────────────────────────────────────────────────────
+// Entity: MissionRequest { id, item, quantity, estimatedValue, description, requestedBy, status, createdAt, reviewedAt?, reviewNote? }
+export const INITIAL_MISSION_REQUESTS = [
+  {
+    id: 1,
+    item: 'Bíblias para distribuição',
+    quantity: 50,
+    estimatedValue: 1500,
+    description: 'Bíblias para distribuir nas comunidades do Maranhão durante a missão de maio.',
+    requestedBy: 'Marcos Pereira',
+    status: 'pendente',
+    createdAt: '2026-04-10T10:00:00Z',
+  },
+  {
+    id: 2,
+    item: 'Kit material de construção',
+    quantity: 1,
+    estimatedValue: 4200,
+    description: 'Cimento, tijolos e ferragens para a obra do templo em Moçambique.',
+    requestedBy: 'Marcos Pereira',
+    status: 'aprovado',
+    createdAt: '2026-03-20T09:00:00Z',
+    reviewedAt: '2026-03-22T14:30:00Z',
+    reviewNote: 'Aprovado. Usar verba da campanha do templo na África.',
+  },
+  {
+    id: 3,
+    item: 'Passagens aéreas',
+    quantity: 3,
+    estimatedValue: 6800,
+    description: 'Passagens para equipe de 3 missionários: São Paulo → Maputo (Moçambique).',
+    requestedBy: 'Marcos Pereira',
+    status: 'rejeitado',
+    createdAt: '2026-03-15T08:00:00Z',
+    reviewedAt: '2026-03-16T11:00:00Z',
+    reviewNote: 'Aguardar próximo trimestre. Orçamento comprometido neste mês.',
+  },
+];
+
+// ─── MESSAGES (Chat 1:1) ──────────────────────────────────────────────────────
+// Entity: Message { id, fromId, toId, text, createdAt, status: 'sent'|'delivered'|'read' }
+// Conversations indexed by sorted user pair: "userId1_userId2"
+export const INITIAL_MESSAGES = [
+  {
+    id: 1, from: 'Pastor José', to: 'Marcos Pereira',
+    text: 'Irmão Marcos, como está o planejamento da missão de maio?',
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(), status: 'read',
+  },
+  {
+    id: 2, from: 'Marcos Pereira', to: 'Pastor José',
+    text: 'Pastor, está tudo encaminhado! Já temos 4 confirmados na equipe.',
+    createdAt: new Date(Date.now() - 3600000 * 1.5).toISOString(), status: 'read',
+  },
+  {
+    id: 3, from: 'Pastor José', to: 'Marcos Pereira',
+    text: 'Glória a Deus! Vou orar por vocês.',
+    createdAt: new Date(Date.now() - 3600000).toISOString(), status: 'delivered',
+  },
+];
+
+// ─── STORIES ─────────────────────────────────────────────────────────────────
+// Entity: Story { id, author, avatar, mediaUrl, mediaType: 'image'|'video', createdAt, expiresAt }
+// Expiration: 24h from createdAt
+export const INITIAL_STORIES = [
+  {
+    id: 1, author: 'Pastor José', avatar: 'PJ',
+    mediaUrl: null, mediaType: 'image',
+    text: '🙏 Dia de oração!',
+    bgColor: '#1a0a00',
+    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 21).toISOString(),
+  },
+  {
+    id: 2, author: 'Marcos Pereira', avatar: 'MP',
+    mediaUrl: null, mediaType: 'image',
+    text: '🌍 Rumo às missões!',
+    bgColor: '#001a0a',
+    createdAt: new Date(Date.now() - 3600000 * 6).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 18).toISOString(),
+  },
+  {
+    id: 3, author: 'Lúcia Ferreira', avatar: 'LF',
+    mediaUrl: null, mediaType: 'image',
+    text: '🎵 Ensaio hoje às 19h!',
+    bgColor: '#0a001a',
+    createdAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 23).toISOString(),
+  },
+];
+
+// ─── REELS ────────────────────────────────────────────────────────────────────
+// Entity: Reel { id, author, avatar, videoUrl, caption, likes, createdAt }
+export const INITIAL_REELS = [
+  {
+    id: 1, author: 'Pastor José', avatar: 'PJ',
+    videoUrl: null,
+    caption: '🔥 Palavra de hoje: "Tudo posso naquele que me fortalece" — Filipenses 4:13',
+    likes: 45, bgColor: '#1a1a2e',
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+  },
+  {
+    id: 2, author: 'Lúcia Ferreira', avatar: 'LF',
+    videoUrl: null,
+    caption: '🎵 Prévia do louvor de domingo — "Oceanos" com o conjunto!',
+    likes: 78, bgColor: '#2e1a1a',
+    createdAt: new Date(Date.now() - 3600000 * 12).toISOString(),
+  },
+  {
+    id: 3, author: 'Marcos Pereira', avatar: 'MP',
+    videoUrl: null,
+    caption: '🌍 Bastidores da missão no Maranhão. Deus está fazendo coisas incríveis!',
+    likes: 112, bgColor: '#1a2e1a',
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+  },
+];

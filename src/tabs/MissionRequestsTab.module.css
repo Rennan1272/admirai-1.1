@@ -1,0 +1,38 @@
+.wrap { padding: 0 0 90px; }
+
+.header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e1e1e; position: sticky; top: 52px; background: #0a0a0a; z-index: 8; }
+.title  { color: #888; font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+.btnAdd { background: #fff; color: #000; border: none; border-radius: 8px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+.filterBar { display: flex; gap: 6px; padding: 12px 18px; overflow-x: auto; }
+.filterBtn { background: #1a1a1a; border: 1px solid #2a2a2a; color: #666; border-radius: 16px; padding: 5px 14px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+.filterActive { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+
+.form { background: #141414; border: 1px solid #222; border-radius: 14px; margin: 0 18px 16px; padding: 18px; }
+.formTitle { color: #777; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-bottom: 14px; }
+.formLabel { display: block; color: #666; font-size: 11px; letter-spacing: 1px; margin-bottom: 5px; }
+.formInput { width: 100%; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px 13px; color: #fff; font-size: 13px; outline: none; margin-bottom: 12px; }
+.formTextarea { width: 100%; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px 13px; color: #fff; font-size: 13px; outline: none; min-height: 70px; resize: none; margin-bottom: 12px; }
+.formActions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btnSave { background: #fff; color: #000; border: none; border-radius: 8px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btnCancel { background: transparent; color: #666; border: 1px solid #333; border-radius: 8px; padding: 8px 14px; font-size: 12px; cursor: pointer; }
+
+.reviewModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 24px; }
+.reviewCard { background: #141414; border: 1px solid #333; border-radius: 16px; padding: 24px; width: 100%; max-width: 360px; }
+.reviewTitle { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+.reviewActions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.btnApprove { background: #4caf50; color: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-size: 12px; font-weight: 700; cursor: pointer; flex: 1; }
+.btnReject  { background: #FF4500; color: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-size: 12px; font-weight: 700; cursor: pointer; flex: 1; }
+
+.empty { color: #444; font-size: 13px; text-align: center; padding: 40px 20px; }
+
+.card { background: #141414; border: 1px solid #1e1e1e; border-radius: 14px; padding: 16px; margin: 0 18px 12px; }
+.cardTop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+.cardItem { color: #fff; font-size: 14px; font-weight: 700; flex: 1; }
+.statusBadge { font-size: 10px; padding: 3px 9px; border-radius: 10px; white-space: nowrap; font-weight: 700; }
+.cardMeta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; font-size: 12px; color: #666; }
+.cardMeta b { color: #ccc; }
+.cardDesc { color: #777; font-size: 12px; line-height: 1.5; margin-bottom: 8px; }
+.cardDate { color: #555; font-size: 10px; margin-bottom: 8px; }
+.reviewNote { background: #1a1a1a; border-left: 3px solid #333; border-radius: 0 6px 6px 0; padding: 8px 12px; color: #888; font-size: 12px; margin-bottom: 10px; }
+.btnReview { width: 100%; background: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 8px; padding: 9px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 4px; }

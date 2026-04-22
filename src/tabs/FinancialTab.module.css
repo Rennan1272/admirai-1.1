@@ -1,0 +1,61 @@
+.wrap { padding: 0 0 90px; }
+
+.header {
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1e1e1e;
+  position: sticky;
+  top: 52px;
+  background: #0a0a0a;
+  z-index: 8;
+}
+.title  { color: #888; font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+.btnAdd { background: #fff; color: #000; border: none; border-radius: 8px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+.periodBar { display: flex; gap: 6px; padding: 12px 18px; overflow-x: auto; }
+.periodBtn { background: #1a1a1a; border: 1px solid #333; color: #777; border-radius: 20px; padding: 6px 16px; font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.periodBtn.active { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+
+.customRange { display: flex; align-items: center; gap: 8px; padding: 0 18px 12px; }
+.dateInput { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none; flex: 1; }
+.rangeSep { color: #555; font-size: 12px; }
+
+.churchFilter { display: flex; gap: 6px; padding: 0 18px 14px; overflow-x: auto; }
+.churchBtn { background: transparent; border: 1px solid #2a2a2a; color: #666; border-radius: 16px; padding: 5px 14px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+.churchBtn.churchActive { border-color: #FF8C00; color: #FF8C00; }
+
+/* Summary cards */
+.summaryRow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px 16px; }
+.summaryCard { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 14px; }
+.summaryTotal { grid-column: 1 / -1; background: #1a0a00; border-color: #FF8C0033; }
+.summaryLabel { display: block; color: #666; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
+.summaryValue { display: block; color: #fff; font-size: 16px; font-weight: 700; }
+.summaryValueLg { display: block; color: #FF8C00; font-size: 22px; font-weight: 700; }
+
+/* Church rows */
+.section { padding: 0 18px; }
+.sectionLabel { color: #666; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-bottom: 12px; }
+
+.churchRow { background: #141414; border: 1px solid #1e1e1e; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.churchName { color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+
+.churchAmounts { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.amountPill { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 6px 10px; flex: 1; min-width: 80px; }
+.pillTotal { border-color: #FF8C0033; }
+.pillLabel { display: block; color: #666; font-size: 9px; letter-spacing: 1px; margin-bottom: 2px; }
+.pillValue { display: block; color: #fff; font-size: 12px; font-weight: 700; }
+
+.churchBar { display: flex; align-items: center; gap: 8px; }
+.churchBarFill { height: 4px; background: linear-gradient(90deg, #FF4500, #FF8C00); border-radius: 2px; min-width: 4px; transition: width 0.4s; }
+.churchBarPct { color: #555; font-size: 10px; }
+
+/* Add form */
+.addForm { background: #141414; border: 1px solid #222; border-radius: 14px; margin: 0 18px 16px; padding: 18px; }
+.formTitle { color: #777; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-bottom: 14px; }
+.formLabel { display: block; color: #666; font-size: 11px; letter-spacing: 1px; margin-bottom: 5px; }
+.formInput { width: 100%; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px 13px; color: #fff; font-size: 13px; outline: none; margin-bottom: 12px; }
+.formActions { display: flex; gap: 8px; margin-top: 4px; }
+.btnSave { background: #fff; color: #000; border: none; border-radius: 8px; padding: 8px 20px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btnCancel { background: transparent; color: #666; border: 1px solid #333; border-radius: 8px; padding: 8px 14px; font-size: 12px; cursor: pointer; }
